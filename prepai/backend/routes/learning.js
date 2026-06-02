@@ -2,10 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Anthropic = require('@anthropic-ai/sdk');
 
+// In learning.js and interview.js, replace getClient():
 function getClient(apiKey) {
   const key = apiKey || process.env.ANTHROPIC_API_KEY;
-  if (!key) throw new Error('No Anthropic API key provided');
-  return new Anthropic({ apiKey: key });
+  if (!key) throw new Error('No API key provided');
+  
+  return new Anthropic({
+    apiKey: key,
+    baseURL: 'https://openrouter.ai/api/v1',
+    defaultHeaders: {
+      'HTTP-Referer': process.env.FRONTEND_URL,
+    }
+  });
 }
 
 // Static course data
@@ -116,7 +124,7 @@ router.post('/explain', async (req, res) => {
     const client = getClient(apiKey);
 
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'deepseek/deepseek-r1-0528:free',
       max_tokens: 1000,
       system: `You are a brilliant tech educator. Explain concepts clearly with examples, analogies, and code snippets where helpful. Keep explanations concise but complete. Format with clear sections.`,
       messages: [{
