@@ -2,10 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Anthropic = require('@anthropic-ai/sdk');
 
+// In learning.js and interview.js, replace getClient():
 function getClient(apiKey) {
   const key = apiKey || process.env.ANTHROPIC_API_KEY;
-  if (!key) throw new Error('No Anthropic API key provided');
-  return new Anthropic({ apiKey: key });
+  if (!key) throw new Error('No API key provided');
+  
+  return new Anthropic({
+    apiKey: key,
+    baseURL: 'https://openrouter.ai/api/v1',
+    defaultHeaders: {
+      'HTTP-Referer': process.env.FRONTEND_URL,
+    }
+  });
 }
 
 // POST /api/interview/generate-questions
@@ -37,7 +45,7 @@ ${resumeText ? `- Personalize based on this resume:\n${resumeText.substring(0, 2
 Return ONLY the JSON array. No markdown, no explanation.`;
 
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'deepseek/deepseek-r1-0528:free',
       max_tokens: 2000,
       system: systemPrompt,
       messages: [{ role: 'user', content: 'Generate the 10 interview questions now.' }]
@@ -88,7 +96,7 @@ Be honest, specific, and constructive. Base scores on actual answer quality.
 Return ONLY the JSON object, no other text.`;
 
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'deepseek/deepseek-r1-0528:free',
       max_tokens: 2500,
       system: systemPrompt,
       messages: [{
@@ -114,7 +122,7 @@ router.post('/followup', async (req, res) => {
     const client = getClient(apiKey);
 
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'deepseek/deepseek-r1-0528:free',
       max_tokens: 300,
       system: `You are a technical interviewer. Ask ONE brief follow-up question based on the candidate's answer to probe deeper or clarify. Keep it to 1-2 sentences max.`,
       messages: [{
