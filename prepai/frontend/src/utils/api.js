@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const BASE = process.env.REACT_APP_API_URL || '/api';
+const BASE = process.env.REACT_APP_API_URL 
+  ? `${process.env.REACT_APP_API_URL}/api` 
+  : '/api';
 
 export function getApiKey() {
   return localStorage.getItem('prepai_api_key') || '';
@@ -51,7 +53,7 @@ export const learningAPI = {
   },
 
   explainTopic: async ({ topic, level }) => {
-    const res = await axios.post(`${BASE}/api/learning/explain`, {
+    const res = await axios.post(`${BASE}/learning/explain`, {
       topic, level, apiKey: getApiKey()
     });
     return res.data;
