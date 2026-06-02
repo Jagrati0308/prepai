@@ -124,7 +124,7 @@ router.post('/explain', async (req, res) => {
     const client = getClient(apiKey);
 
     const message = await client.messages.create({
-      model: 'nvidia/nemotron-nano-9b-v2:free',
+      model: 'openai/gpt-oss-20b:free',
       max_tokens: 1000,
       system: `You are a brilliant tech educator. Explain concepts clearly with examples, analogies, and code snippets where helpful. Keep explanations concise but complete. Format with clear sections.`,
       messages: [{
