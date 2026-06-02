@@ -45,7 +45,7 @@ ${resumeText ? `- Personalize based on this resume:\n${resumeText.substring(0, 2
 Return ONLY the JSON array. No markdown, no explanation.`;
 
     const message = await client.messages.create({
-      model: 'nvidia/nemotron-nano-9b-v2:free',
+      model: 'openai/gpt-oss-20b:free',
       max_tokens: 2000,
       system: systemPrompt,
       messages: [{ role: 'user', content: 'Generate the 10 interview questions now.' }]
@@ -96,7 +96,7 @@ Be honest, specific, and constructive. Base scores on actual answer quality.
 Return ONLY the JSON object, no other text.`;
 
     const message = await client.messages.create({
-      model: 'nvidia/nemotron-nano-9b-v2:free',
+      model: 'openai/gpt-oss-20b:free',
       max_tokens: 2500,
       system: systemPrompt,
       messages: [{
@@ -122,7 +122,7 @@ router.post('/followup', async (req, res) => {
     const client = getClient(apiKey);
 
     const message = await client.messages.create({
-      model: 'nvidia/nemotron-nano-9b-v2:free',
+      model: 'openai/gpt-oss-20b:free',
       max_tokens: 300,
       system: `You are a technical interviewer. Ask ONE brief follow-up question based on the candidate's answer to probe deeper or clarify. Keep it to 1-2 sentences max.`,
       messages: [{
