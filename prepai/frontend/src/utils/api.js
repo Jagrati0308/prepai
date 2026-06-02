@@ -51,7 +51,7 @@ export const learningAPI = {
   },
 
   explainTopic: async ({ topic, level }) => {
-    const res = await axios.post(`${BASE}/learning/explain`, {
+    const res = await axios.post(`${BASE}/api/learning/explain`, {
       topic, level, apiKey: getApiKey()
     });
     return res.data;
